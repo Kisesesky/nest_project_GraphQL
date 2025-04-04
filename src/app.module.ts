@@ -10,6 +10,13 @@ import { PostsModule } from './modules/posts/posts.module';
 import { Post } from './modules/posts/entities/post.entity';
 import { Comment } from './modules/comments/entities/comment.entity';
 import { CommentsModule } from './modules/comments/comments.module';
+import { HashtagModule } from './modules/hashtag/hashtag.module';
+import { Hashtag } from './modules/hashtag/entities/hashtag.entity';
+import { CategoryModule } from './modules/categories/category.module';
+import { Category } from './modules/categories/entities/category.entity';
+import { ChatModule } from './modules/chat/chat.module';
+import { ChatRoom } from './modules/chat/entities/chat-room.entity';
+import { Message } from './modules/chat/entities/message.entity';
 
 
 @Module({
@@ -21,7 +28,7 @@ import { CommentsModule } from './modules/comments/comments.module';
     username: 'postgres',
     password: '123',
     database: 'nest_grephql',
-    entities: [User,Post,Comment],
+    entities: [User,Post,Comment,Hashtag,Category,ChatRoom,Message],
     synchronize: true,
   }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -32,7 +39,10 @@ import { CommentsModule } from './modules/comments/comments.module';
       },
       context: ({ req, res }) => ({ req, res })
     }),
-    PostsModule
+    PostsModule,
+    HashtagModule,
+    CategoryModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService],

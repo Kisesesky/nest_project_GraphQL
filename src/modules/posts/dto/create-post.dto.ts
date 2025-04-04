@@ -11,4 +11,10 @@ export class CreatePostDto {
   @IsString()
   content: string
 
+  @Field(()=> [String], { nullable: true })
+  hashtags?: string[]
+
+  @Field()
+  category: string
+
 }

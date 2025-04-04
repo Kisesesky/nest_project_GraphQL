@@ -24,5 +24,6 @@ import { AppConfigService } from '../../config/app/config.service';
     AppConfigModule,
   ],
   providers: [UsersResolver, UsersService, JwtStrategy],
+  exports: [UsersService]
 })
 export class UsersModule {}

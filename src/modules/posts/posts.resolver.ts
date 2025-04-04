@@ -22,10 +22,10 @@ export class PostsResolver {
     const postWrite = await this.postsService.createPost(createPostDto, user)
     console.log('\x1b[34m%s\x1b[0m', `
     -----------------------------------------------
-    |            🔹 🎊Post Write Success🎊       |
+    |            🔹 🎊Post Write Success🎊        |
     -----------------------------------------------
     `)
-    console.log('\x1b[34m%s\x1b[0m',`title: ${createPostDto.title}\ncontent: ${createPostDto.content}\nAuthor: ${user.name}`)
+    console.log('\x1b[34m%s\x1b[0m',`title: ${createPostDto.title}\ncontent: ${createPostDto.content}\nAuthor: ${user.name}\nHashTags: ${createPostDto.hashtags?.join(', ')}\nCategory: ${createPostDto.category}`)
     return postWrite
   }
 
@@ -36,20 +36,18 @@ export class PostsResolver {
       console.log(`Post with PostId: ${id} Not Found`)
       throw new NotFoundException(`Post with PostId: ${id} Not Found`)
     }
-    console.log(console.log('\x1b[36m%s\x1b[0m', `
+    console.log('\x1b[36m%s\x1b[0m', `
     -----------------------------------------------
     |            🔍 Fetching Post Info            |
     -----------------------------------------------
     🆔 Requested Post ID: ${id}
-    `))
+    `)
     console.log('\x1b[32m%s\x1b[0m', `
       ✅ Post Found!
-      🆔 ID: ${post.id}
-      📝 Title: ${post.title}
-      📄 Content:
-      ${post.content}
+      🆔 ID: ${post.id}   📝 Title: ${post.title}    ✍️ Author: ${post.author?.name || 'Unknown'}    📁 Category: ${post.category?.name || 'Unknown'}
+      📄 Content: ${post.content}
       📅 Created At: ${post.createdAt}
-      ✍️ Author: ${post.author?.name || 'Unknown'}
+      #️⃣ HashTags: ${post.hashtags?.map(tag => tag.tagname).join(', ') || 'No hashtags'}
       💬 Comments: ${post.comments ? post.comments.length : 0}개
       ----------------------------------------------------------------------
       `);
@@ -61,7 +59,6 @@ export class PostsResolver {
           🔹 Comment ${index + 1}:
           ✍️ Author: ${comment.user?.id || 'Unknown'}
           💬 Content: ${comment.content}
-          📅 Created At: ${comment.createdAt}
           `);
         });
     
@@ -81,12 +78,10 @@ export class PostsResolver {
     
       postList.forEach(post => {
         console.log('\x1b[32m%s\x1b[0m', `
-        🆔 PostID: ${post.id}
-        📝 Title: ${post.title}
-        📄 Content: 
-        ${post.content}
+        🆔 PostID: ${post.id}   📝 Title: ${post.title}    ✍️ Author: ${post.author?.name || 'Unknown'}    📁 Category: ${post.category?.name || 'Unknown'}
+        📄 Content: ${post.content}
         📅 Created At: ${post.createdAt}
-        ✍️ Author: ${post.author?.name || 'Unknown'}
+        #️⃣ HashTags: ${post.hashtags?.map(tag => tag.tagname).join(', ') || 'No hashtags'}
         💬 Comments: ${post.comments ? post.comments.length : 0}개
         ----------------------------------------------------------------------
         `);

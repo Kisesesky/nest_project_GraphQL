@@ -1,9 +1,11 @@
 import { ObjectType, Field, Int, ID, HideField, registerEnumType } from '@nestjs/graphql';
-import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs'
 import { Exclude } from 'class-transformer';
 import { Post } from '../../../modules/posts/entities/post.entity';
 import { Comment } from '../../../modules/comments/entities/comment.entity';
+import { ChatRoom } from './../../chat/entities/chat-room.entity';
+import { Message } from './../../chat/entities/message.entity';
 
 
 export enum Role {
@@ -51,6 +53,14 @@ export class User {
   @OneToMany(()=>Comment,(comment)=>comment.user)
   @Field(()=>[Comment], { nullable:true })
   comments: Comment[]
+
+  @ManyToMany(()=>ChatRoom, chatroom=>chatroom.participants)
+  @Field(()=>[ChatRoom])
+  chatrooms: ChatRoom[]
+
+  @OneToMany(()=>Message, message=>message.sender)
+  @Field(()=>[Message], { nullable:true })
+  message: Message[]
 
   @BeforeInsert()
   async hashPassword() {

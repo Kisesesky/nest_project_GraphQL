@@ -23,7 +23,7 @@ import { Message } from './modules/chat/entities/message.entity';
   imports: [UsersModule,CommentsModule,
   TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'localhost',
+    host: 'database',
     port: 5432,
     username: 'postgres',
     password: '123',
@@ -33,11 +33,8 @@ import { Message } from './modules/chat/entities/message.entity';
   }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
-      subscriptions: {
-        'graphql-ws': true
-      },
-      context: ({ req, res }) => ({ req, res })
+      autoSchemaFile: 'schema.gql',
+      installSubscriptionHandlers: true,
     }),
     PostsModule,
     HashtagModule,

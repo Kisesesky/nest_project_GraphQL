@@ -44,6 +44,16 @@ export class UsersService {
     return user
   }
 
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne({
+      where : { id }
+    })
+    if(!user) {
+      throw new UnauthorizedException('Not Found User')
+    }
+    return user
+  }
+
   jwtTokenBuilder(email: string, origin: string) {
     const { accessToken, accessOption } = this.setAccessToken(
       email,

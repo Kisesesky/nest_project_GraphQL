@@ -1,13 +1,13 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreateChatInput {
+export class CreateMessageInput {
   @Field()
   content: string
 
   @Field()
-  sender: string
+  senderId: number
 
   @Field()
-  roomId: string
+  roomId: number
 }

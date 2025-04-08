@@ -20,17 +20,24 @@ export class ChatService {
     if(!name){
       throw new  BadRequestException('ChatRoom Name is Required')
     }
+
+    const user = await this.usersService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException(`User ID ${userId}를 찾을 수 없습니다.`);
+    }
+
     const room = this.chatRoomRepository.create({
       name,
-      owner: { id: userId },
-      participants: [{ id: userId }]
+      owner: user,
+      users: [user]
     })
+    
     return this.chatRoomRepository.save(room)
   }
 
   async joinChatRoom(joinRoomDto: JoinRoomDto) {
     const { roomId, name, participantId } = joinRoomDto
-    const user = await this.usersService.findUserById(participantId)
+    const user = await this.usersService.findOne(participantId)
     if(!user) {
       throw new NotFoundException('User Not Found')
     }

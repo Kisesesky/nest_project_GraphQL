@@ -23,9 +23,14 @@ export class ChatRoom {
   @JoinTable()
   owner: User
 
-  @OneToMany(()=>Message, message=>message.chatRoom)
+  @Field(()=> [User])
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[]
+
   @Field(()=> [Message])
-  messages: Message
+  @OneToMany(() => Message, message => message.chatRoom)
+  messages: Message[]
 
   @ManyToMany(()=>User, user=>user.chatrooms)
   @JoinTable()

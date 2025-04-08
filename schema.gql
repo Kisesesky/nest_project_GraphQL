@@ -1,0 +1,147 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  id: ID!
+  content: String!
+  createdAt: DateTime!
+  user: User!
+  post: Post!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Hashtag {
+  id: ID!
+  tagname: String!
+  posts: [Post!]!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  posts: [Post!]!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  createdAt: DateTime!
+  comments: [Comment!]
+  author: User
+  hashtags: [Hashtag!]
+  category: Category!
+}
+
+type Message {
+  id: ID!
+  content: String!
+  chatRoom: ChatRoom!
+  sender: User!
+}
+
+type ChatRoom {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  owner: User!
+  users: [User!]!
+  messages: [Message!]!
+  participants: [User!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  roles: Role!
+  createdAt: DateTime!
+  posts: [Post!]
+  comments: [Comment!]
+  chatrooms: [ChatRoom!]!
+  message: [Message!]
+}
+
+"""User role type"""
+enum Role {
+  ADMIN
+  COMMON
+}
+
+type SignInResponse {
+  accessToken: String!
+  refreshToken: String!
+  message: String!
+}
+
+type Query {
+  getUser(email: String!): User!
+  getPost(id: Float!): Post!
+  getPosts: [Post!]!
+  hashtag(tagname: String!): Hashtag!
+  postsByHashtag(tagname: String!): [Post!]!
+  getPostsByCategory(categoryName: String!): [Post!]!
+  getUserRooms(userId: Int!): [ChatRoom!]!
+  getRoomByName(name: String!): ChatRoom!
+  getMessages(roomId: Float!, page: Float = 1, limit: Float = 20): [Message!]!
+}
+
+type Mutation {
+  signUp(createUserDto: CreateUserDto!): User!
+  signIn(signInInput: SingInDto!, origin: String!): SignInResponse!
+  updateUserRole(email: String!, role: Role!): User!
+  createPost(createPostDto: CreatePostDto!): Post!
+  createHashtag(createHashtagInput: CreateHashtagInput!): Hashtag!
+  createChatRoom(createChatRoom: CreateChatRoomDto!): ChatRoom!
+  joinChatRoom(joinChatRoom: JoinRoomDto!): ChatRoom!
+  createMessage(createMessage: CreateMessageInput!): Message!
+  deleteMessage(messageId: Float!, userId: Float!): Boolean!
+}
+
+input CreateUserDto {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input SingInDto {
+  email: String!
+  password: String!
+}
+
+input CreatePostDto {
+  title: String!
+  content: String!
+  hashtags: [String!]
+  category: String!
+}
+
+input CreateHashtagInput {
+  tagname: String!
+}
+
+input CreateChatRoomDto {
+  name: String!
+  userId: Float!
+}
+
+input JoinRoomDto {
+  roomId: Float
+  name: String
+  participantId: Float!
+}
+
+input CreateMessageInput {
+  content: String!
+  senderId: Float!
+  roomId: Float!
+}
+
+type Subscription {
+  messageAdded(chatRoomId: Int!): Message!
+}

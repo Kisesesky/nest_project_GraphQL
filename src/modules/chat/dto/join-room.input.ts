@@ -9,5 +9,5 @@ export class JoinRoomDto {
     name?: string
 
     @Field()
-    participantId: string
+    participantId: number
 }
